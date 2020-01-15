@@ -8,8 +8,8 @@ pipeline {
     }
     environment {
         CI = 'true'
-	dockerRegistry = "santoshhkumarr/docker-nodejs"
-  	dockerRegistryCredential = 'dockerhub'
+	dockerRegistry = "santoshhkumarr/myrepo:docker-nodejs"
+  	dockerRegistryCredential = 'santoshhkumarr'
      	dockerImage = ''
     }
     stages {
