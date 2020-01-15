@@ -13,22 +13,33 @@ pipeline {
      	dockerImage = ''
     }
     stages {
-        stage('Build') {
+        stage('Configure') {
 
             steps {
                 sh 'npm install'
 
             }
 }
-
- stage('Start') {
-
-            steps {
-                echo "App is up and running"
-
-            }
-}
-
-
+stage('Building image') {
+       steps{
+         script {
+           dockerImage = docker.build dockerRegistry + ":$BUILD_NUMBER"
+         }
+       }
+     }
+     stage('Upload Image') {
+       steps{
+         script {
+           docker.withRegistry( '', dockerRegistryCredential ) {
+             dockerImage.push()
+           }
+         }
+       }
+     }
+     stage('Clean-stale- image') {
+       steps{
+         sh "docker rmi $dockerRegistry:$BUILD_NUMBER"
+       }
+     }
 }
 }        
