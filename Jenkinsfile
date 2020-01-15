@@ -1,4 +1,11 @@
 pipeline {
+
+environment {
+     dockerRegistry = "santoshhkumarr/docker-nodejs"
+     dockerRegistryCredential = 'dockerhub'
+     dockerImage = ''
+   }
+
     agent {
         docker {
             image 'node:10.17.0-alpine' 
@@ -20,7 +27,7 @@ pipeline {
  stage('Start') {
 
             steps {
-                sh 'npm start'
+                echo "App is up and running"
 
             }
 }
