@@ -8,7 +8,7 @@ pipeline {
     }
     environment {
         CI = 'true'
-	dockerRegistry = "santoshhkumarr/myrepo:docker-nodejs"
+	dockerRegistry = "santoshhkumarr/myrepo ."
   	dockerRegistryCredential = 'santoshhkumarr'
      	dockerImage = ''
     }
