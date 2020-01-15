@@ -1,17 +1,7 @@
-FROM node
-
-RUN apt-get update && apt-get upgrade -y \
-    && apt-get clean
-
-RUN mkdir /app
-WORKDIR /app
-
-COPY package*.json /app/
-
+FROM node:10.17.0-alpine
+WORKDIR /usr/src/app
+COPY package*.json ./
 RUN npm install
-
-COPY src /app/src
-
+COPY . .
 EXPOSE 3000
-
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]
