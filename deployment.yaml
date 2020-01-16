@@ -13,7 +13,7 @@ spec:
         app: sampleapp
     spec:
       containers:
-      - name: sampleapp-container
+      - name: gateway-deployment
         image: santoshhkumarr/sampleapp:latest
         imagePullPolicy: Never
         ports:
