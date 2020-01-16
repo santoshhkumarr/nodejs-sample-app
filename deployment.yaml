@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+name: sampleapp
+labels:
+  app: sampleapp
+spec:
+strategy:
+  type: Recreate
+template:
+  metadata:
+    labels:
+      app: sampleapp
+      tier: sampleapp
+  spec:
+    containers:
+    - name: minikube
+      image: santoshhkumarr/sampleapp:latest
+      imagePullPolicy: Always
+      ports:
+      - containerPort: 3000
+        name: sampleapp
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+name: sampleapp
+labels:
+  app: sampleapp
+spec:
+ports:
+  - port: 3000
+    targetPort: 3000
+selector:
+  app: sampleapp
+  tier: sampleapp
+type: LoadBalancer
