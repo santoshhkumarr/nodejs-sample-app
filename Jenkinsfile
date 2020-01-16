@@ -1,45 +1,30 @@
-pipeline {
 
- agent {
-        docker {
-            image 'node:10.17.0-alpine' 
-            args '-p 3000:3000 -p 5000:5000'
-        }
-    }
-    environment {
-        CI = 'true'
-	dockerRegistry = "santoshhkumarr/myrepo ."
-  	dockerRegistryCredential = 'santoshhkumarr'
-     	dockerImage = ''
-    }
-    stages {
-        stage('Configure') {
+node {
 
-            steps {
-                sh 'npm install'
+def dockerapp
+ 
+    stage {
+        stage('cloning-repo') {
 
-            }
+            checkout scm
 }
-stage('Building image') {
-       steps{
-         script {
-           dockerImage = docker.build dockerRegistry + ":$BUILD_NUMBER"
-         }
+stage('Build-image') {
+     
+           dockerapp = docker.build("santoshhkumarr/sampleapp")"
+ }
+     stage('Test-Image') {
+       dockerapp.inside{
+echo "Test case done"
+}
+}
+
+     stage('Push-image') {
+       docker.withRegistry('https://registry.hub.docker.com','docker_hub')
+dockerapp.push("${env.BUILD_NUMBER}")
+dockerapp.push("latest")
+        
        }
-     }
-     stage('Upload Image') {
-       steps{
-         script {
-           docker.withRegistry( '', dockerRegistryCredential ) {
-             dockerImage.push()
-           }
-         }
-       }
-     }
-     stage('Clean-stale- image') {
-       steps{
-         sh "docker rmi $dockerRegistry:$BUILD_NUMBER"
-       }
-     }
+echo "Push Docker Build to DockerHub""
+    
 }
 }        
